@@ -1,8 +1,11 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import Image from "next/image";
 import { MobileActionBar } from "./components/mobile-action-bar";
 import { ProductShowcase } from "./components/product-showcase";
 import { SectionLabel } from "./components/section-label";
 import { SiteHeader } from "./components/site-header";
+import { siteConfig } from "./data/site";
 
 const phoneHref = "tel:+441332555018";
 const phoneLabel = "+44 1332 555 018";
@@ -11,8 +14,17 @@ const directionsHref =
 const mapEmbedSrc =
   "https://www.google.com/maps?q=23+Friar+Gate+Derby+DE1+1BX&output=embed";
 
+const heroBackgroundCandidate = join(
+  process.cwd(),
+  "public",
+  siteConfig.heroBackgroundImage.replace(/^\//, ""),
+);
+
+const heroBackgroundSrc = existsSync(heroBackgroundCandidate)
+  ? siteConfig.heroBackgroundImage
+  : siteConfig.heroBackgroundFallbackImage;
+
 const imageSet = {
-  hero: "/images/barber/hero-bg.jpg",
   servicePortrait:
     "https://images.unsplash.com/photo-1747352570145-75dec25ea0fb?auto=format&fit=crop&w=1200&q=76",
   galleryLead:
@@ -29,24 +41,24 @@ const imageSet = {
 
 const productSlides = [
   {
+    src: "https://images.unsplash.com/photo-1621607512022-6aecc4fed814?auto=format&fit=crop&w=1200&q=82",
+    alt: "Professional hair clipper and scissors laid on a dark wood stump",
+    title: "Professional Clippers",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1621607512214-68297480165e?auto=format&fit=crop&w=1200&q=82",
+    alt: "Barber blow dryer and scissors tool flatlay on dark wood surface",
+    title: "Signature Styling Tools",
+  },
+  {
     src: "/images/barber/products/product-1.jpg",
     alt: "Premium beard oil bottle styled with barber tools on walnut surface",
-    title: "Signature Beard Oil Edit",
+    title: "Beard Care Essentials",
   },
   {
     src: "/images/barber/products/product-2.jpg",
-    alt: "Luxury beard oil bottle in premium editorial product composition",
-    title: "Premium Grooming Collection",
-  },
-  {
-    src: "/images/barber/products/product-3.jpg",
-    alt: "Model holding beard oil bottle to showcase products used in shop",
-    title: "Professional Finish Oils",
-  },
-  {
-    src: "/images/barber/products/product-4.jpg",
-    alt: "Beard growth oil bottle and premium boxed product on neutral setting",
-    title: "Retail-Grade Product Line",
+    alt: "Premium beard oil in editorial product composition on rustic surface",
+    title: "Grooming Products",
   },
 ];
 
@@ -98,7 +110,7 @@ const localBusinessJsonLd = {
   "@type": "LocalBusiness",
   additionalType: "https://schema.org/Barbershop",
   name: "Oak and Steel",
-  image: [imageSet.hero, imageSet.galleryLead],
+  image: [heroBackgroundSrc, imageSet.galleryLead],
   telephone: "+44 1332 555 018",
   address: {
     "@type": "PostalAddress",
@@ -141,51 +153,47 @@ export default function Home() {
 
       <SiteHeader />
 
-      <main className="relative overflow-hidden pb-32">
-        <Image
-          src="/images/barber/icons/walk-ins-cut.png"
-          alt="Walk-ins available badge"
-          width={200}
-          height={200}
-          priority
-          className="pointer-events-none fixed bottom-[calc(6.6rem+env(safe-area-inset-bottom))] right-3 z-40 h-auto w-20 drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)] sm:w-24 md:w-28 lg:top-24 lg:right-6 lg:bottom-auto lg:w-32 xl:w-36"
-        />
-
+      <main className="relative flex flex-col overflow-hidden pb-[calc(9.25rem+env(safe-area-inset-bottom))] sm:pb-32">
         <div className="grain-overlay" aria-hidden />
 
-        <section className="relative isolate min-h-[84svh] pt-24 sm:pt-28">
+        <section className="relative isolate h-[100svh]">
           <Image
-            src={imageSet.hero}
+            src={heroBackgroundSrc}
             alt="Barber shaping a modern fade in warm studio light"
             fill
             priority
             quality={78}
             sizes="100vw"
             className="object-cover"
+            style={{ objectPosition: siteConfig.heroBackgroundPosition }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#14181b]/86 via-[#14181b]/46 to-[#14181b]/94" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0d1114]/92 via-[#14181b]/66 to-[#14181b]/32" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0d1114]/68 via-[#14181b]/18 to-[#0d1114]/74" />
+          <div className="absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_50%,transparent_56%,rgba(8,10,12,0.34)_100%)]" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[#14181b] lg:hidden" aria-hidden />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent to-[#1d2a2e] lg:hidden" aria-hidden />
           <div
             className="pointer-events-none absolute left-1/2 top-[16%] h-64 w-64 -translate-x-1/2 rounded-full bg-[#c9a76a]/20 blur-3xl"
             aria-hidden
           />
 
-          <div className="relative z-10 mx-auto grid min-h-[84svh] w-full max-w-6xl grid-cols-1 items-end gap-6 px-4 pb-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(310px,390px)] lg:gap-8 lg:px-8">
-            <div className="max-w-3xl self-end rounded-[2rem] border border-[#c9a76a]/35 bg-[#14181b]/58 p-6 shadow-[0_18px_60px_-20px_rgba(0,0,0,0.85)] backdrop-blur-md sm:p-8 lg:p-10">
+          <div className="relative z-10 mx-auto grid h-full w-full max-w-6xl grid-cols-1 items-start lg:items-end gap-4 px-4 pt-20 pb-[calc(9.25rem+env(safe-area-inset-bottom))] sm:gap-6 sm:px-6 sm:pt-28 sm:pb-16 lg:grid-cols-[minmax(0,1fr)_minmax(420px,500px)] lg:gap-8 lg:px-8">
+            <div className="max-w-3xl self-end rounded-[2rem] border border-[#c9a76a]/35 bg-[#14181b]/58 p-4 shadow-[0_18px_60px_-20px_rgba(0,0,0,0.85)] backdrop-blur-md sm:p-8 lg:p-10">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c9a76a]">
                 Derby City Centre
               </p>
-              <h1 className="mt-3 font-[family-name:var(--font-heading)] text-4xl leading-[0.95] tracking-tight text-[#f4e7d0] sm:text-5xl lg:text-6xl">
+              <h1 className="mt-3 font-[family-name:var(--font-heading)] text-[2rem] leading-[0.9] tracking-tight text-[#f4e7d0] sm:text-5xl sm:leading-[0.95] lg:text-6xl">
                 Sharp cuts, clean fades, proper barber craft.
               </h1>
-              <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#f4e7d0]/88 sm:text-base">
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-[#f4e7d0]/88 sm:mt-4 sm:text-base">
                 Oak and Steel on Friar Gate. Walk-ins welcome, easy appointments, and
                 a calm chair from first cut to final detail.
               </p>
 
-              <div className="mt-6 flex flex-wrap items-center gap-3">
+              <div className="mt-5 flex flex-wrap items-center gap-2.5 sm:mt-6 sm:gap-3">
                 <a
                   href={phoneHref}
-                  className="rounded-full bg-[#c9a76a] px-6 py-3 text-sm font-semibold text-[#14181b] transition-transform hover:scale-[1.02]"
+                  className="rounded-full bg-[#c9a76a] px-5 py-2.5 text-sm font-semibold text-[#14181b] transition-transform hover:scale-[1.02] sm:px-6 sm:py-3"
                 >
                   Call Now
                 </a>
@@ -193,34 +201,43 @@ export default function Home() {
                   href={directionsHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-[#f4e7d0]/70 px-6 py-3 text-sm font-semibold text-[#f4e7d0] transition-colors hover:border-[#c9a76a] hover:text-[#c9a76a]"
+                  className="rounded-full border border-[#f4e7d0]/70 px-5 py-2.5 text-sm font-semibold text-[#f4e7d0] transition-colors hover:border-[#c9a76a] hover:text-[#c9a76a] sm:px-6 sm:py-3"
                 >
                   Directions
                 </a>
               </div>
 
-              <div className="mt-6 grid gap-2 text-xs text-[#f4e7d0]/92 sm:grid-cols-3 sm:text-sm">
-                <span className="rounded-full border border-[#c9a76a]/35 bg-[#14181b]/45 px-3 py-1.5 text-center">
-                  Open today 9:00 - 19:00
-                </span>
-                <span className="rounded-full border border-[#c9a76a]/35 bg-[#14181b]/45 px-3 py-1.5 text-center">
-                  Walk-ins welcome
-                </span>
-                <span className="rounded-full border border-[#c9a76a]/35 bg-[#14181b]/45 px-3 py-1.5 text-center">
-                  Card + cash accepted
-                </span>
+              <p className="mt-3 text-[0.8rem] font-semibold uppercase tracking-[0.08em] text-[#c9a76a]/95 sm:text-sm">
+                Cuts from £18
+              </p>
+
+              <div className="mt-4 rounded-full border border-[#c9a76a]/35 bg-[#14181b]/45 px-3 py-2 text-[0.72rem] leading-snug text-[#f4e7d0]/92 sm:px-4 sm:py-2.5 sm:text-sm">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span className="whitespace-nowrap">Open 9:00-19:00</span>
+                  <span aria-hidden className="text-[#c9a76a]/80">
+                    •
+                  </span>
+                  <span className="whitespace-nowrap">Walk-ins</span>
+                  <span aria-hidden className="text-[#c9a76a]/80">
+                    •
+                  </span>
+                  <span className="whitespace-nowrap">Card + cash</span>
+                </div>
               </div>
             </div>
 
             <ProductShowcase
               slides={productSlides}
               intervalMs={6000}
-              className="lg:mt-8 lg:self-start"
+              className="hidden lg:block lg:self-center lg:-mt-100"
             />
           </div>
         </section>
 
-        <section id="location" className="mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:px-8">
+        <section
+          id="location"
+          className="order-6 mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:order-none lg:px-8"
+        >
           <div className="section-motif grid gap-5 rounded-3xl border border-[#c9a76a]/25 bg-[#1d2a2e]/50 p-5 sm:p-7 lg:grid-cols-2 lg:gap-8">
             <div className="space-y-5">
               <SectionLabel label="Location + Hours" />
@@ -277,7 +294,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="services" className="mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:px-8">
+        <section
+          id="services"
+          className="order-2 mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:order-none lg:px-8"
+        >
           <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
             <div className="section-motif rounded-3xl border border-[#c9a76a]/25 bg-[#1d2a2e]/45 p-5 sm:p-7 lg:col-span-7">
               <SectionLabel label="Service Menu" />
@@ -292,7 +312,7 @@ export default function Home() {
                       <h3 className="text-lg font-semibold text-[#f4e7d0]">
                         {service.name}
                       </h3>
-                      <p className="text-sm text-[#f4e7d0]/74">
+                      <p className="hidden text-sm text-[#f4e7d0]/74 sm:block">
                         {service.description}
                       </p>
                     </div>
@@ -304,7 +324,7 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="relative lg:col-span-5 lg:pt-14">
+            <div className="relative hidden sm:block lg:col-span-5 lg:pt-14">
               <div className="absolute -left-3 top-5 hidden h-16 w-16 rounded-2xl border border-[#c9a76a]/40 lg:block" />
               <div className="overflow-hidden rounded-3xl border border-[#c9a76a]/30">
                 <Image
@@ -321,7 +341,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="prices" className="mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:px-8">
+        <section
+          id="prices"
+          className="order-3 mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:order-none lg:px-8"
+        >
           <div className="section-motif rounded-3xl border border-[#c9a76a]/25 bg-[#4a2d1f]/25 p-5 sm:p-7">
             <SectionLabel label="Price Board" />
             <h2 className="mt-2 font-[family-name:var(--font-heading)] text-3xl leading-tight text-[#f4e7d0] sm:text-4xl">
@@ -355,7 +378,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="gallery" className="mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:px-8">
+        <section
+          id="gallery"
+          className="order-4 mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:order-none lg:px-8"
+        >
           <SectionLabel label="Work Showcase" />
           <h2 className="mt-2 font-[family-name:var(--font-heading)] text-3xl leading-tight text-[#f4e7d0] sm:text-4xl">
             Recent cuts, beard detail and shop atmosphere.
@@ -395,7 +421,17 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contact" className="mx-auto w-full max-w-6xl px-4 pb-12 pt-9 sm:px-6 lg:px-8">
+        <section
+          id="products"
+          className="order-5 mx-auto w-full max-w-6xl px-4 py-9 sm:px-6 lg:hidden"
+        >
+          <ProductShowcase slides={productSlides} intervalMs={6000} />
+        </section>
+
+        <section
+          id="contact"
+          className="order-7 mx-auto w-full max-w-6xl px-4 pb-12 pt-9 sm:px-6 lg:order-none lg:px-8"
+        >
           <div className="section-motif grid gap-7 rounded-3xl border border-[#c9a76a]/25 bg-[#1d2a2e]/50 p-5 sm:p-7 lg:grid-cols-2">
             <div className="space-y-4">
               <SectionLabel label="Contact / Booking" />
@@ -461,7 +497,7 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="px-4 pb-28 text-center text-xs text-[#f4e7d0]/60 sm:px-6 lg:px-8">
+        <footer className="order-8 px-4 pb-[calc(6.5rem+env(safe-area-inset-bottom))] text-center text-xs text-[#f4e7d0]/60 sm:px-6 sm:pb-28 lg:px-8">
           Oak and Steel - Portfolio demo concept for local barber pitch.
         </footer>
       </main>

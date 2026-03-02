@@ -1,6 +1,17 @@
+import Image from "next/image";
+
 export function SiteHeader() {
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-4 z-50 flex justify-center px-4">
+    <header className="pointer-events-none fixed inset-x-0 top-4 z-50 flex flex-col items-center px-4">
+      <Image
+        src="/images/barber/icons/walk-ins-cut.png"
+        alt="Walk-ins available badge"
+        width={200}
+        height={200}
+        priority
+        className="absolute right-6 top-0 hidden h-auto w-24 drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)] lg:block xl:w-28"
+      />
+
       <a
         href="#"
         className="pointer-events-auto relative inline-flex items-center gap-3 rounded-full border border-[#c9a76a]/45 bg-[linear-gradient(180deg,rgba(10,10,12,0.96)_0%,rgba(14,14,16,0.86)_100%)] px-5 py-2.5 shadow-[0_16px_42px_-20px_rgba(0,0,0,0.92)] backdrop-blur-xl transition-transform hover:scale-[1.01]"
@@ -15,6 +26,10 @@ export function SiteHeader() {
         </span>
         <ScissorsIcon />
       </a>
+
+      <p className="mt-2 rounded-full border border-[#c9a76a]/45 bg-[linear-gradient(180deg,rgba(14,18,21,0.72)_0%,rgba(14,18,21,0.56)_100%)] px-4 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.11em] text-[#f4e7d0] shadow-[0_14px_28px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md sm:hidden">
+        Walk-Ins available
+      </p>
     </header>
   );
 }

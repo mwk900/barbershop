@@ -36,7 +36,7 @@ export function ProductShowcase({
 
   return (
     <aside
-      className={`w-full max-w-md justify-self-center overflow-hidden rounded-[1.9rem] border border-[#c9a76a]/35 bg-[linear-gradient(165deg,rgba(18,23,28,0.86)_0%,rgba(24,32,36,0.74)_100%)] p-3 shadow-[0_24px_62px_-24px_rgba(0,0,0,0.88)] backdrop-blur-md lg:justify-self-end ${className}`}
+      className={`w-full max-w-xl justify-self-center overflow-hidden rounded-[1.9rem] border border-[#c9a76a]/35 bg-[linear-gradient(165deg,rgba(18,23,28,0.86)_0%,rgba(24,32,36,0.74)_100%)] p-3 shadow-[0_24px_62px_-24px_rgba(0,0,0,0.88)] backdrop-blur-md lg:justify-self-end ${className}`}
     >
       <div className="flex items-center justify-between px-1">
         <p className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#c9a76a]">
@@ -47,14 +47,14 @@ export function ProductShowcase({
         </span>
       </div>
 
-      <div className="relative mt-3 overflow-hidden rounded-[1.45rem] border border-[#c9a76a]/26 aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/5]">
+      <div className="relative mt-3 overflow-hidden rounded-[1.45rem] border border-[#c9a76a]/26 aspect-[3/2]">
         {slides.map((slide, index) => (
           <Image
             key={slide.src}
             src={slide.src}
             alt={slide.alt}
             fill
-            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 70vw, 360px"
+            sizes="(max-width: 640px) 92vw, (max-width: 1024px) 70vw, 500px"
             className={`object-cover transition-opacity duration-700 ${
               index === activeIndex ? "opacity-100" : "opacity-0"
             }`}
